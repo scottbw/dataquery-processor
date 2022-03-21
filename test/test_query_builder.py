@@ -15,7 +15,7 @@ def test_simple_query():
     }
     qb = QueryBuilder(manifest)
     q = qb.create_query()
-    assert q == 'SELECT [\'Ethnicity\',\'Fruit\'] FROM "dbo.idd_v_students_by_fpe" GROUP BY "Ethnicity","Fruit"'
+    assert q == 'SELECT "Ethnicity","Fruit" FROM "dbo.idd_v_students_by_fpe" GROUP BY "Ethnicity","Fruit"'
 
 
 def test_simple_query_with_constraint():
@@ -32,4 +32,4 @@ def test_simple_query_with_constraint():
     }
     qb = QueryBuilder(manifest)
     q = qb.create_query()
-    assert q == 'SELECT [\'Ethnicity\'] FROM "dbo.idd_v_students_by_fpe" WHERE "Fruit"=\'banana\' GROUP BY "Ethnicity"'
+    assert q == 'SELECT "Ethnicity" FROM "dbo.idd_v_students_by_fpe" WHERE "Fruit"=\'banana\' GROUP BY "Ethnicity"'

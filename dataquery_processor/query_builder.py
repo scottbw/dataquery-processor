@@ -23,13 +23,13 @@ class QueryBuilder(object):
         if len(c) > 0:
             q = Query().\
                 from_(self.table).\
-                select(self.fieldnames).\
+                select(*self.fieldnames).\
                 groupby(*self.fieldnames).\
                 where(Criterion.all(c))
         else:
             q = Query(). \
                 from_(self.table). \
-                select(self.fieldnames)\
+                select(*self.fieldnames)\
                 .groupby(*self.fieldnames)
 
         return q.get_sql()
