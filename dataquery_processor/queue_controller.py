@@ -1,5 +1,7 @@
 import boto3
 import json
+import logging
+logger = logging.getLogger(__name__)
 
 
 class Message(object):
@@ -29,7 +31,7 @@ class QueueController(object):
             QueueUrl=self.queue,
             MaxNumberOfMessages=1
         )
-        if len(messageResponse['Messages']) > 0:
+        if 'Messages' in messageResponse:
             return Message(messageResponse['Messages'][0])
         else:
             return None
@@ -39,7 +41,7 @@ class QueueController(object):
             QueueUrl=self.queue,
             ReceiptHandle=message.receipt_handle()
             )
-        print("deleted "+message.order()['orderRef'])
+        logger.info("deleted "+message.order()['orderRef'])
 
 
 
