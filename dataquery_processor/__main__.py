@@ -8,8 +8,8 @@ from logging.config import fileConfig
 
 __package__ = 'dataquery_processor'
 
-if os.path.exists('logging_config.ini'):
-    fileConfig('logging_config.ini')
+if os.path.exists(get_config_path('logging_config.ini')):
+    fileConfig(get_config_path('logging_config.ini'))
 logger = logging.getLogger(__name__)
 
 
