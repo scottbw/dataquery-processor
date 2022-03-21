@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 import csv
 import logging
+from dataquery_processor import QueryBuilder
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,10 +34,11 @@ class OrderProcessor(object):
 
     def __generate_query__(self):
         logger.info('generating query for order ' + self.order['orderRef'])
-        pass
+        self.query = QueryBuilder(self.order).create_query()
 
     def __execute_query__(self):
         logger.info('executing query for order ' + self.order['orderRef'])
+        logging.debug("SQL = " + self.query)
         filename = self.__create_folder__() + "data.csv"
 
         fieldnames = []
