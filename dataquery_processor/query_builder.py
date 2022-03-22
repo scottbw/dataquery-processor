@@ -1,9 +1,15 @@
-from pypika import Table, Query, Criterion
+import logging
+
+from pypika import Table, Criterion, MSSQLQuery as Query
 from dataquery_processor import _config
 
 
 def map_table(table):
     return _config.get_table_mapping(table)
+
+
+def map_measure(measure):
+    return _config.get_measure_mapping(measure)
 
 
 class QueryBuilder(object):
@@ -17,15 +23,17 @@ class QueryBuilder(object):
                 self.constraints.append(field)
             else:
                 self.fieldnames.append(field['fieldName'])
+        self.measure = map_measure(manifest['measure'])
         self.table = Table(map_table(manifest['datasource']), schema='dbo')
-        print(self.table)
-        print(map_table(manifest['datasource']))
+        logging.debug("Query builder using table " + str(self.table))
 
     def create_query(self):
         c = self.create_constraints()
+        select_fields = self.fieldnames.copy()
+        select_fields.append(self.measure)
         q = Query().\
             from_(self.table).\
-            select(*self.fieldnames).\
+            select(*select_fields).\
             groupby(*self.fieldnames).\
             where(Criterion.all(c))
         return q.get_sql()

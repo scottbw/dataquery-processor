@@ -12,6 +12,9 @@ class Config:
     def get_table_mapping(self, mapping):
         return self.config.get('table_mappings', mapping)
 
+    def get_measure_mapping(self, mapping):
+        return self.config.get('measure_mappings', mapping)
+
 
 _config = Config()
 
