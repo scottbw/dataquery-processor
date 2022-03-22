@@ -35,6 +35,9 @@ class OrderProcessor(object):
     def __generate_query__(self):
         logger.info('generating query for order ' + self.order['orderRef'])
         self.query = QueryBuilder(self.order).create_query()
+        filename = self.__create_folder__() + "query.sql"
+        with open(filename, "w", encoding='utf-8') as file:
+            file.write(self.query)
 
     def __execute_query__(self):
         logger.info('executing query for order ' + self.order['orderRef'])
