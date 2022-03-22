@@ -8,6 +8,7 @@ class Config:
         path = get_config_path("config.ini")
         self.config = configparser.ConfigParser()
         self.config.read(path, encoding='utf-8')
+        self.conn = self.config.get("ODBC", "conn")
 
     def get_table_mapping(self, mapping):
         return self.config.get('table_mappings', mapping)

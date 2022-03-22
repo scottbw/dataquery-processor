@@ -1,6 +1,6 @@
 import logging
 
-from pypika import Table, Criterion, MSSQLQuery as Query
+from pypika import Table, Criterion, MSSQLQuery as Query, functions as fn
 from dataquery_processor import _config
 
 
@@ -30,7 +30,7 @@ class QueryBuilder(object):
     def create_query(self):
         c = self.create_constraints()
         select_fields = self.fieldnames.copy()
-        select_fields.append(self.measure)
+        select_fields.append(fn.Sum(self.table[self.measure]))
         q = Query().\
             from_(self.table).\
             select(*select_fields).\

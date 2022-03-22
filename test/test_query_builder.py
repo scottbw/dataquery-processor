@@ -16,7 +16,7 @@ def test_simple_query():
     }
     qb = QueryBuilder(manifest)
     q = qb.create_query()
-    assert q == 'SELECT "Ethnicity","Fruit","Unrounded FPE" FROM "dbo"."v_IIDD_dd5" WHERE "Academic year" IN (\'2020/21\') GROUP BY "Ethnicity","Fruit"'
+    assert q == 'SELECT "Ethnicity","Fruit",SUM("Unrounded FPE") FROM "dbo"."v_IIDD_dd5" WHERE "Academic year" IN (\'2020/21\') GROUP BY "Ethnicity","Fruit"'
 
 
 def test_simple_query_with_constraint():
@@ -34,7 +34,7 @@ def test_simple_query_with_constraint():
     }
     qb = QueryBuilder(manifest)
     q = qb.create_query()
-    assert q == 'SELECT "Ethnicity","Unrounded FPE" FROM "dbo"."v_IIDD_dd5" WHERE "Fruit"=\'banana\' AND "Academic year" IN (\'2020/21\') GROUP BY "Ethnicity"'
+    assert q == 'SELECT "Ethnicity",SUM("Unrounded FPE") FROM "dbo"."v_IIDD_dd5" WHERE "Fruit"=\'banana\' AND "Academic year" IN (\'2020/21\') GROUP BY "Ethnicity"'
 
 
 def test_simple_query_with_constraints_2():
@@ -43,7 +43,7 @@ def test_simple_query_with_constraints_2():
         "measure": "FPE",
         "items":
             [
-                {"fieldName": "AcademicYearStart"},
+                {"fieldName": "Academic year"},
                 {"fieldName": "Domicile (UK county/ Non-UK by country/ Unknown)"},
                 {"fieldName": "First year marker", "allowedValues": ["First year"]},
                 {"fieldName": "First year marker"}
@@ -55,5 +55,5 @@ def test_simple_query_with_constraints_2():
     }
     qb = QueryBuilder(manifest)
     q = qb.create_query()
-    assert q == 'SELECT "AcademicYearStart","Domicile (UK county/ Non-UK by country/ Unknown)","First year marker","Unrounded FPE" FROM "dbo"."v_IIDD_dd5" WHERE "First year marker"=\'First year\' AND "Academic year" IN (\'2019/20\',\'2020/21\') GROUP BY "AcademicYearStart","Domicile (UK county/ Non-UK by country/ Unknown)","First year marker"'
+    assert q == 'SELECT "Academic year","Domicile (UK county/ Non-UK by country/ Unknown)","First year marker",SUM("Unrounded FPE") FROM "dbo"."v_IIDD_dd5" WHERE "First year marker"=\'First year\' AND "Academic year" IN (\'2019/20\',\'2020/21\') GROUP BY "Academic year","Domicile (UK county/ Non-UK by country/ Unknown)","First year marker"'
 

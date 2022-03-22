@@ -1,9 +1,8 @@
 import json
 import os
 from datetime import datetime
-import csv
 import logging
-from dataquery_processor import QueryBuilder
+from dataquery_processor import QueryBuilder, OdbcQueryRunner
 
 logger = logging.getLogger(__name__)
 
@@ -43,22 +42,8 @@ class OrderProcessor(object):
         logger.info('executing query for order ' + self.order['orderRef'])
         logging.debug("SQL = " + self.query)
         filename = self.__create_folder__() + "data.csv"
-
-        fieldnames = []
-        for field in self.order['items']:
-            fieldnames.append(field['fieldName'])
-
-        rows = []
-        for row_number in range(1, 100):
-            row = {}
-            for fieldname in fieldnames:
-                row[fieldname] = "BANANA"
-            rows.append(row)
-
-        with open(filename, "w", encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames)
-            writer.writeheader()
-            writer.writerows(rows)
+        runner = OdbcQueryRunner()
+        runner.run_query_and_save_results(self.query, filename)
         self.output_filename = filename
         self.job_completed = datetime.now()
 
