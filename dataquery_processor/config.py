@@ -16,6 +16,11 @@ class Config:
     def get_measure_mapping(self, mapping):
         return self.config.get('measure_mappings', mapping)
 
+    def get_column_mapping(self, column):
+        if self.config.has_option('column_mappings', column):
+            return self.config.get('column_mappings', column)
+        return column
+
 
 _config = Config()
 

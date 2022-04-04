@@ -1,7 +1,8 @@
+import logging
 
 #
 # Using command line BCP.exe
-#
+
 
 
 #
@@ -14,11 +15,13 @@ from dataquery_processor import _config
 
 class OdbcQueryRunner(object):
     def __init__(self):
-        print(_config.conn)
+
         conn = pyodbc.connect(_config.conn)
         self.cursor = conn.cursor()
 
     def run_query_and_save_results(self, query, file):
+
+        logging.debug("Running query using ODBC")
         rows = self.cursor.execute(query)
 
         with open(file, 'w', newline='') as csvfile:

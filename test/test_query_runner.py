@@ -7,7 +7,7 @@ def test_create_and_run_simple_query():
         "measure": "FPE",
         "items":
             [
-                {"fieldName": "Ethnicity"},
+                {"fieldName": "Ethnicity (501)"},
                 {"fieldName": "Fruit"}
             ],
         "years": [

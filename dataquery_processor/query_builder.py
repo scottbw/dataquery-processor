@@ -12,6 +12,10 @@ def map_measure(measure):
     return _config.get_measure_mapping(measure)
 
 
+def map_column(column):
+    return _config.get_column_mapping(column)
+
+
 class QueryBuilder(object):
 
     def __init__(self, manifest):
@@ -19,6 +23,7 @@ class QueryBuilder(object):
         self.fieldnames = []
         self.constraints = []
         for field in manifest['items']:
+            field['fieldName'] = map_column(field['fieldName'])
             if 'allowedValues' in field.keys() and len(field['allowedValues']) > 0:
                 self.constraints.append(field)
             else:
@@ -30,7 +35,7 @@ class QueryBuilder(object):
     def create_query(self):
         c = self.create_constraints()
         select_fields = self.fieldnames.copy()
-        select_fields.append(fn.Sum(self.table[self.measure]))
+        select_fields.append(fn.Sum(self.table[self.measure], self.measure))
         q = Query().\
             from_(self.table).\
             select(*select_fields).\
